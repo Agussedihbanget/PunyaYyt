@@ -29,6 +29,7 @@
             width: 100%;
             max-width: 600px; /* Membatasi lebar maksimal agar tidak terlalu lebar */
             box-sizing: border-box;
+            min-height: 400px; /* Memastikan container cukup tinggi untuk semua elemen */
         }
 
         h1, h2 {
@@ -54,6 +55,14 @@
             max-width: 250px;
             padding: 10px;
             margin-top: 10px;
+        }
+
+        /* Styling untuk label alasan */
+        label {
+            display: block;
+            margin-top: 10px;
+            color: white;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -81,7 +90,6 @@
                 // Menambahkan kolom alasan
                 var reasonLabel = document.createElement("label");
                 reasonLabel.innerText = "Tulis Alasan Lain";
-                reasonLabel.style.color = "white";
                 document.querySelector(".container").appendChild(reasonLabel);
 
                 var reasonInput = document.createElement("textarea");
