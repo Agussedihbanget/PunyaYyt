@@ -90,6 +90,28 @@
             border: none;
             cursor: pointer;
         }
+
+        /* Specific Style for Admin Button */
+        #adminButton {
+            display: none; /* Hidden by default */
+        }
+
+        .answer-list {
+            margin-top: 20px;
+            text-align: left;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .answer-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .answer-list li {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -114,16 +136,33 @@
                 <button onclick="sendReason()">KIRIM</button>
             </div>
         </div>
+        <button id="adminButton" onclick="viewAnswers()">Lihat Jawaban</button>
     </div>
 
     <div class="container" id="thirdPage" style="display: none;">
         <button class="keluar-button" onclick="exitSite()">KELUAR</button>
     </div>
 
+    <div class="container" id="adminPage" style="display: none;">
+        <h2>Daftar Jawaban</h2>
+        <div class="answer-list" id="answerList">
+            <ul>
+                <!-- Jawaban dari orang lain akan ditampilkan di sini -->
+            </ul>
+        </div>
+        <button class="keluar-button" onclick="exitSite()">KELUAR</button>
+    </div>
+
     <script>
+        var answers = [];
+
         function nextPage() {
             var name = document.getElementById("nameInput").value;
             if (name) {
+                // If name is 200906, show the admin button
+                if (name === "200906") {
+                    document.getElementById("adminButton").style.display = "block";
+                }
                 // Hide the first page and show the second page
                 document.getElementById("firstPage").style.display = "none";
                 document.getElementById("secondPage").style.display = "block";
@@ -131,27 +170,51 @@
         }
 
         function nextPageToThird() {
-            // Move to the third page when "GASS" or "TIDAK" is clicked
+            // Save the answer (GASS or TIDAK)
+            var name = document.getElementById("nameInput").value;
+            var answer = event.target.innerText; // Get the button text (GASS or TIDAK)
+            answers.push({ name: name, answer: answer, time: new Date().toLocaleTimeString() });
+
+            // Move to the third page
             document.getElementById("secondPage").style.display = "none";
             document.getElementById("thirdPage").style.display = "block";
+        }
+
+        function sendReason() {
+            var reason = document.getElementById("reasonInput").value;
+            var name = document.getElementById("nameInput").value;
+            if (reason) {
+                answers.push({ name: name, answer: reason, time: new Date().toLocaleTimeString() });
+                alert("Alasan telah dikirim!");
+                // Go to the third page
+                document.getElementById("secondPage").style.display = "none";
+                document.getElementById("thirdPage").style.display = "block";
+            } else {
+                alert("Silakan tulis alasan terlebih dahulu!");
+            }
+        }
+
+        function viewAnswers() {
+            // Hide second page and show admin page with answers
+            document.getElementById("secondPage").style.display = "none";
+            document.getElementById("adminPage").style.display = "block";
+            displayAnswers();
+        }
+
+        function displayAnswers() {
+            var answerList = document.getElementById("answerList").querySelector("ul");
+            answerList.innerHTML = ""; // Clear previous answers
+
+            answers.forEach(function(answer, index) {
+                var listItem = document.createElement("li");
+                listItem.textContent = `${index + 1}. ${answer.name} - ${answer.answer} - ${answer.time}`;
+                answerList.appendChild(listItem);
+            });
         }
 
         function exitSite() {
             // Redirect to WhatsApp link
             window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
-        }
-
-        function sendReason() {
-            var reason = document.getElementById("reasonInput").value;
-            if (reason) {
-                // If reason is filled, go to the third page
-                alert("Alasan telah dikirim!");
-                document.getElementById("secondPage").style.display = "none";
-                document.getElementById("thirdPage").style.display = "block";
-            } else {
-                // If reason is not filled, alert user
-                alert("Silakan tulis alasan terlebih dahulu!");
-            }
         }
     </script>
 </body>
