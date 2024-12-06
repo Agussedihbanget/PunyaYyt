@@ -71,56 +71,25 @@
     <div class="container hidden" id="answerPage">
         <h1>Jawaban Jawaban</h1>
         <div id="answerList"></div>
+        <button onclick="refreshAnswers()">REFRESH</button>
         <button onclick="keluar()">KELUAR</button>
     </div>
 
     <script>
         let userName = "";
+        let answers = [
+            { name: "200906", answer: "GASS", time: "10:00" },
+            { name: "YAYA", answer: "MINGGU PI", time: "10:30" }
+        ]; // Jawaban yang sudah ada
 
         function nextPage() {
             userName = document.getElementById("nameInput").value;
             document.getElementById("firstPage").classList.add("hidden");
             document.getElementById("secondPage").classList.remove("hidden");
-            
+
             // Hapus teks "Selamat datang!" dan ganti dengan "MAUKO PERGI CORNER HARI SABTU?"
             document.getElementById("welcomeText").innerHTML = "MAUKO PERGI CORNER HARI SABTU?";
 
             // Menyembunyikan tombol "LIHAT JAWABAN" untuk selain 200906
             if (userName === "200906") {
-                document.getElementById("lihatJawabanBtn").classList.remove("hidden");
-            }
-        }
-
-        function answer(answer) {
-            document.getElementById("secondPage").classList.add("hidden");
-            document.getElementById("thirdPage").classList.remove("hidden");
-
-            // Menampilkan jawaban
-            document.getElementById("answerText").innerHTML = "Jawabanmu: " + answer;
-        }
-
-        function keluar() {
-            // Mengarahkan ke WhatsApp setelah keluar
-            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
-        }
-
-        function lihatJawaban() {
-            // Menyembunyikan halaman ketiga dan menampilkan halaman jawaban
-            document.getElementById("thirdPage").classList.add("hidden");
-            document.getElementById("answerPage").classList.remove("hidden");
-
-            // Menampilkan daftar jawaban
-            const answerList = [
-                { name: "200906", answer: "GASS", time: "10:00" },
-                { name: "YAYA", answer: "MINGGU PI", time: "10:30" }
-            ];
-
-            let listHtml = "";
-            answerList.forEach((entry, index) => {
-                listHtml += `<p>${index + 1}. ${entry.name} - ${entry.answer} - ${entry.time}</p>`;
-            });
-            document.getElementById("answerList").innerHTML = listHtml;
-        }
-    </script>
-</body>
-</html>
+                document
