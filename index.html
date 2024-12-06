@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Yayat</title>
     <style>
+        /* Set the background image from URL */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -14,24 +15,28 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-image: url('https://raw.githubusercontent.com/Agussedihbanget/PunyaYyt/refs/heads/main/website.png');
+            background-image: url('https://raw.githubusercontent.com/Agussedihbanget/PunyaYyt/refs/heads/main/website.png'); /* Ganti dengan URL gambar yang diinginkan */
             background-size: cover;
             background-position: center;
             color: white;
         }
-        h1, h2 {
-            font-size: 48px;
+
+        /* Container Styling */
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5); /* Background transparan hitam agar teks bisa terlihat jelas */
+            padding: 20px;
+            border-radius: 10px;
         }
+
+        h1, h2 {
+            font-size: 36px;
+        }
+
         input, button {
             padding: 10px;
             font-size: 16px;
             margin-top: 10px;
-        }
-        .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 10px;
         }
     </style>
 </head>
@@ -48,12 +53,13 @@
         function nextPage() {
             var name = document.getElementById("nameInput").value;
             if (name) {
+                // Setelah menekan tombol "MASUK"
                 document.querySelector("h1").innerText = "MAUKO PERGI CORNER HARI SABTU?";
                 document.querySelector("h2").innerText = "Tulis Alasan Lain";
                 document.querySelector("button").innerText = "KIRIM";
                 document.querySelector("button").setAttribute("onclick", "sendAnswer()");
                 document.querySelector(".container").style.textAlign = "left";
-                document.getElementById("nameInput").style.display = "none";
+                document.getElementById("nameInput").style.display = "none"; // Sembunyikan input setelah mengklik "MASUK"
             }
         }
 
