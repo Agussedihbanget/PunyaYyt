@@ -27,9 +27,18 @@
             padding: 20px;
             border-radius: 10px;
             width: 100%;
-            max-width: 600px; /* Membatasi lebar maksimal agar tidak terlalu lebar */
+            max-width: 600px;
             box-sizing: border-box;
-            min-height: 400px; /* Memastikan container cukup tinggi untuk semua elemen */
+            height: 100%; /* Memastikan container memenuhi layar */
+            position: absolute; /* Membuat container berada di atas halaman */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         h1, h2 {
@@ -87,7 +96,7 @@
                 document.querySelector(".container").style.textAlign = "left";
                 document.getElementById("nameInput").style.display = "none"; // Sembunyikan input setelah mengklik "MASUK"
                 
-                // Menambahkan kolom alasan
+                // Menghapus teks yang sebelumnya muncul lebih dari sekali
                 var reasonLabel = document.createElement("label");
                 reasonLabel.innerText = "Tulis Alasan Lain";
                 document.querySelector(".container").appendChild(reasonLabel);
