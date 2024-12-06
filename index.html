@@ -3,132 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Yayat</title>
+    <title>ANAK RUSAK</title>
     <style>
-        /* Reset Margin dan Padding untuk memastikan semuanya rapi */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Mengatur background menjadi hitam dengan elemen lainnya di depan */
         body {
-            background-color: #000; /* Hitam, bisa diganti warna lain */
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column; /* Menambahkan ini agar semua elemen rapi */
-            color: white; /* Warna teks menjadi putih */
-        }
-
-        /* Menata kontainer form untuk memasukkan nama */
-        .container {
-            text-align: center;
-            width: 100%;
-        }
-
-        /* Menata elemen input nama */
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            color: black;
-            background-color: white;
-            border: none;
-            border-radius: 5px;
-            width: 60%;
-            margin-bottom: 20px;
-        }
-
-        /* Menata tombol */
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #333;
+            background-color: black;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px;
+            font-family: Arial, sans-serif;
+            text-align: center;
         }
-
-        button:hover {
-            background-color: #555;
+        .container {
+            width: 100%;
+            margin-top: 50px;
         }
-
-        /* Menyembunyikan elemen tertentu yang akan ditampilkan setelah klik tombol */
         .hidden {
             display: none;
         }
-
-        /* Style untuk bagian yang menampilkan jawaban akhir */
-        .finalResponse {
-            text-align: center;
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            width: 80%;
+            margin: 10px 0;
+            background-color: #333;
+            color: white;
+            border: 1px solid #ccc;
+        }
+        .answer-section {
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>ANAK RUSAK</h1> <!-- Teks ini akan selalu muncul di setiap halaman -->
 
-        <!-- Form input nama -->
-        <div id="nameInputPage">
-            <input type="text" id="username" placeholder="Masukkan Nama">
-            <br>
-            <button id="masukBtn">MASUK</button>
-        </div>
+    <div class="container" id="firstPage">
+        <h1>ANAK RUSAK</h1>
+        <p>Masukkan nama kamu:</p>
+        <input type="text" id="nameInput" placeholder="Siapa namamu?">
+        <br>
+        <button onclick="nextPage()">MASUK</button>
+    </div>
 
-        <!-- Halaman setelah tombol "MASUK" -->
-        <div id="responseArea" class="hidden">
-            <button id="gassBtn">GASS</button>
-            <button id="mingguBtn">MINGGU PI</button>
-        </div>
+    <div class="container hidden" id="secondPage">
+        <h1>Selamat datang!</h1>
+        <p id="welcomeText"></p>
+        <button class="hidden" id="lihatJawabanBtn" onclick="lihatJawaban()">LIHAT JAWABAN</button>
+        <button id="gassBtn" onclick="answer('GASS')">GASS</button>
+        <button id="mingguPiBtn" onclick="answer('MINGGU PI')">MINGGU PI</button>
+    </div>
 
-        <!-- Halaman jawaban final -->
-        <div id="finalResponse" class="hidden finalResponse">
-            <p id="finalText"></p>
-            <button id="keluarBtn">KELUAR</button>
-        </div>
+    <div class="container hidden" id="thirdPage">
+        <h1>Hasil Jawaban</h1>
+        <p id="answerText"></p>
+        <button onclick="keluar()">KELUAR</button>
+    </div>
+
+    <div class="container hidden" id="answerPage">
+        <h1>Jawaban Jawaban</h1>
+        <div id="answerList"></div>
+        <button onclick="keluar()">KELUAR</button>
     </div>
 
     <script>
-        // Menyembunyikan halaman lain saat pertama kali tampil
-        document.getElementById("responseArea").classList.add("hidden");
-        document.getElementById("finalResponse").classList.add("hidden");
+        let userName = "";
 
-        // Event listener untuk tombol "MASUK"
-        document.getElementById("masukBtn").addEventListener("click", function() {
-            const name = document.getElementById("username").value;
-            if (name === "200906") {
-                // Jika nama yang dimasukkan adalah "200906", tampilkan halaman berikutnya
-                document.getElementById("nameInputPage").classList.add("hidden"); // Sembunyikan input nama
-                document.getElementById("responseArea").classList.remove("hidden"); // Tampilkan tombol GASS dan MINGGU PI
-            } else {
-                // Jika nama selain "200906", tetap lanjut tanpa tombol tambahan
-                document.getElementById("nameInputPage").classList.add("hidden");
-                document.getElementById("finalResponse").classList.remove("hidden");
-                document.getElementById("finalText").textContent = "Terima Kasih, Anda tidak dapat melihat jawaban.";
+        function nextPage() {
+            userName = document.getElementById("nameInput").value;
+            document.getElementById("firstPage").classList.add("hidden");
+            document.getElementById("secondPage").classList.remove("hidden");
+            
+            // Tampilkan pesan selamat datang
+            document.getElementById("welcomeText").innerHTML = "Halo, " + userName + "!";
+
+            // Menyembunyikan tombol "LIHAT JAWABAN" untuk selain 200906
+            if (userName === "200906") {
+                document.getElementById("lihatJawabanBtn").classList.remove("hidden");
             }
-        });
+        }
 
-        // Event listener untuk tombol "GASS"
-        document.getElementById("gassBtn").addEventListener("click", function() {
-            document.getElementById("finalResponse").classList.remove("hidden"); // Tampilkan hasil
-            document.getElementById("finalText").textContent = "Gas Pale"; // Teks setelah GASS
-        });
+        function answer(answer) {
+            document.getElementById("secondPage").classList.add("hidden");
+            document.getElementById("thirdPage").classList.remove("hidden");
 
-        // Event listener untuk tombol "MINGGU PI"
-        document.getElementById("mingguBtn").addEventListener("click", function() {
-            document.getElementById("finalResponse").classList.remove("hidden"); // Tampilkan hasil
-            document.getElementById("finalText").textContent = "Oke"; // Teks setelah MINGGU PI
-        });
+            // Menampilkan jawaban
+            document.getElementById("answerText").innerHTML = "Jawabanmu: " + answer;
+        }
 
-        // Event listener untuk tombol "KELUAR"
-        document.getElementById("keluarBtn").addEventListener("click", function() {
-            window.location.href = "https://chat.whatsapp.com/FlhdU5f2lG0OeugzKaW7u"; // Redirect ke WhatsApp
-        });
+        function keluar() {
+            // Mengarahkan ke WhatsApp setelah keluar
+            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
+        }
+
+        function lihatJawaban() {
+            // Menyembunyikan halaman ketiga dan menampilkan halaman jawaban
+            document.getElementById("thirdPage").classList.add("hidden");
+            document.getElementById("answerPage").classList.remove("hidden");
+
+            // Menampilkan daftar jawaban
+            const answerList = [
+                { name: "200906", answer: "GASS", time: "10:00" },
+                { name: "YAYA", answer: "MINGGU PI", time: "10:30" }
+            ];
+
+            let listHtml = "";
+            answerList.forEach((entry, index) => {
+                listHtml += `<p>${index + 1}. ${entry.name} - ${entry.answer} - ${entry.time}</p>`;
+            });
+            document.getElementById("answerList").innerHTML = listHtml;
+        }
     </script>
 </body>
 </html>
