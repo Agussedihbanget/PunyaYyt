@@ -1,176 +1,107 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANAK RUSAK</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            color: white;
-            text-align: center;
-            overflow: hidden;
-        }
-        #background-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-        }
-        h1 {
-            font-size: 48px;
-            margin-top: 20px;
-        }
-        h2 {
-            font-size: 24px;
-            margin-top: 20px;
-        }
-        .button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 20px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .button:hover {
-            background-color: #45a049;
-        }
-        iframe {
-            border: none;
-            margin-top: 20px;
-        }
-
-        #questionSection {
-            display: none;
-        }
-        #exitButton {
-            display: none;
-            margin-top: 30px;
-        }
-        #specialButtons {
-            display: none;
-            margin-top: 30px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anak Rusak</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('website.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      font-size: 32px;
+      margin-top: 20px;
+    }
+    p {
+      font-size: 28px;
+    }
+    button, textarea, input {
+      margin: 10px;
+      padding: 10px;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
-    <!-- Video TikTok sebagai background -->
-    <video id="background-video" autoplay loop muted>
-        <source src="https://www.tiktok.com/embed/ZSjc9CUYp" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+  <div id="main">
+    <h1>ANAK RUSAK</h1>
+    <p>Selamat Datang!</p>
+    <input type="text" id="username" placeholder="Siapa namamu?" />
+    <button onclick="checkName()">MASUK</button>
+  </div>
 
-    <div id="content"></div>
+  <div id="choices" style="display: none;">
+    <p>Pilih jawabanmu:</p>
+    <button onclick="submitAnswer('GASS')">GASS</button>
+    <button onclick="submitAnswer('MINGGU PI')">MINGGU PI</button>
+    <textarea id="reason" placeholder="Alasan lain..."></textarea>
+    <button onclick="submitAnswer('Alasan: ' + document.getElementById('reason').value)">KIRIM</button>
+  </div>
 
-    <script>
-        // Fungsi untuk menghapus semua konten sebelumnya dan menampilkan konten baru
-        function loadContent(content) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = ''; // Menghapus konten lama
-            contentDiv.innerHTML = content; // Menampilkan konten baru
+  <div id="seeAnswers" style="display: none;">
+    <h2>Jawaban:</h2>
+    <ul id="answersList"></ul>
+    <button onclick="location.href='https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u'">KELUAR</button>
+  </div>
+
+  <script>
+    let answers = []; // Array untuk menyimpan jawaban
+
+    function checkName() {
+      const name = document.getElementById('username').value.trim();
+      if (!name) {
+        alert('Masukkan namamu dulu!');
+        return;
+      }
+      if (name === '200906') {
+        document.getElementById('main').style.display = 'none';
+        document.getElementById('seeAnswers').style.display = 'block';
+        updateAnswersList();
+      } else {
+        document.getElementById('main').style.display = 'none';
+        document.getElementById('choices').style.display = 'block';
+      }
+    }
+
+    function submitAnswer(answer) {
+      const name = document.getElementById('username').value.trim();
+      if (answer.includes('Alasan: ') && answer === 'Alasan: ') {
+        alert('Tulis alasanmu terlebih dahulu!');
+        return;
+      }
+      const currentTime = new Date();
+      const formattedTime = currentTime.toLocaleTimeString();
+
+      answers.push({ name, answer, time: formattedTime });
+
+      alert('Jawabanmu telah terkirim!');
+      document.getElementById('choices').style.display = 'none';
+      document.getElementById('seeAnswers').style.display = 'block';
+      updateAnswersList();
+    }
+
+    function updateAnswersList() {
+      const list = document.getElementById('answersList');
+      list.innerHTML = '';
+      if (answers.length === 0) {
+        for (let i = 0; i < 3; i++) {
+          const li = document.createElement('li');
+          li.textContent = `${i + 1}. ......`;
+          list.appendChild(li);
         }
-
-        // Halaman pertama: Masukkan nama
-        function showNameForm() {
-            loadContent(`
-                <h1>ANAK RUSAK</h1>
-                <h2>Selamat datang, silakan masukkan nama</h2>
-                <form id="nameForm">
-                    <input type="text" id="name" placeholder="Siapa namamu?" required>
-                    <button type="submit" class="button">MASUK</button>
-                </form>
-            `);
-
-            document.getElementById('nameForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const name = document.getElementById('name').value;
-                if (name) {
-                    showQuestionPage(name);
-                }
-            });
-        }
-
-        // Halaman pertanyaan setelah nama dimasukkan
-        function showQuestionPage(name) {
-            let questionContent = `
-                <h2>Halo ${name}, Corner Hari Sabtu?</h2>
-                <button class="button" onclick="showAnswer('GASS')">GASS</button>
-                <button class="button" onclick="showAnswer('MINGGU PI')">MINGGU PI</button>
-                <br><br>
-                <textarea id="customAnswer" placeholder="Masukkan alasan kamu"></textarea>
-                <button class="button" onclick="submitCustomAnswer()">Kirim</button>
-            `;
-            
-            // Jika nama adalah "200906", tampilkan tombol tambahan
-            if (name === "200906") {
-                questionContent += `
-                    <br><br>
-                    <button class="button" onclick="goToNextPage()">LANJUT</button>
-                    <button class="button" onclick="viewAnswers()">LIHAT JAWABAN</button>
-                `;
-            }
-
-            loadContent(questionContent);
-        }
-
-        // Fungsi untuk menampilkan jawaban setelah tombol "GASS" atau "MINGGU PI" ditekan
-        function showAnswer(answer) {
-            let answerMessage = answer === 'GASS' ? 'Gas Pale' : 'Oke';
-            loadContent(`
-                <h2>${answerMessage}</h2>
-                <button class="button" onclick="exitWebsite()">KELUAR</button>
-            `);
-        }
-
-        // Fungsi untuk mengirim alasan custom
-        function submitCustomAnswer() {
-            const customAnswer = document.getElementById('customAnswer').value;
-            if (customAnswer) {
-                loadContent(`
-                    <h2>Alasan kamu telah dikirim: ${customAnswer}</h2>
-                    <button class="button" onclick="exitWebsite()">KELUAR</button>
-                `);
-            } else {
-                alert("Tolong masukkan alasan kamu.");
-            }
-        }
-
-        // Fungsi untuk melanjutkan ke halaman berikutnya
-        function goToNextPage() {
-            loadContent(`
-                <h2>Ini adalah halaman LANJUT, bisa diakses oleh semua orang.</h2>
-                <button class="button" onclick="exitWebsite()">KELUAR</button>
-            `);
-        }
-
-        // Fungsi untuk melihat jawaban, hanya bisa diakses oleh "200906"
-        function viewAnswers() {
-            loadContent(`
-                <h2>Jawaban dari orang-orang yang telah mengisi:</h2>
-                <p>Ini adalah jawaban yang kamu lihat karena nama kamu adalah 200906.</p>
-                <button class="button" onclick="exitWebsite()">KELUAR</button>
-            `);
-        }
-
-        // Fungsi untuk keluar dari website
-        function exitWebsite() {
-            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u"; // Mengarahkan ke link WhatsApp
-        }
-
-        // Tampilkan halaman pertama ketika website dimuat
-        showNameForm();
-    </script>
+      } else {
+        answers.forEach((item, index) => {
+          const li = document.createElement('li');
+          li.textContent = `${index + 1}. ${item.name} - ${item.answer} - ${item.time}`;
+          list.appendChild(li);
+        });
+      }
+    }
+  </script>
 </body>
 </html>
