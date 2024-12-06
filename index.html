@@ -12,18 +12,49 @@
       background-size: cover;
       color: white;
       text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #main, #choices, #seeAnswers {
+      display: none;
+      flex-direction: column;
+      align-items: center;
     }
     h1 {
       font-size: 32px;
-      margin-top: 20px;
     }
-    p {
+    p, label {
       font-size: 28px;
+      margin: 10px 0;
     }
-    button, textarea, input {
-      margin: 10px;
+    input[type="text"], textarea {
+      margin: 10px 0;
       padding: 10px;
       font-size: 18px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid white;
+      border-radius: 5px;
+    }
+    button {
+      margin: 10px 0;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid white;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    ul li {
+      font-size: 18px;
+      margin: 5px 0;
     }
   </style>
 </head>
@@ -35,17 +66,22 @@
     <button onclick="checkName()">MASUK</button>
   </div>
 
-  <div id="choices" style="display: none;">
-    <p>Pilih jawabanmu:</p>
+  <div id="choices">
+    <p>Corner Hari Sabtu?</p>
     <button onclick="submitAnswer('GASS')">GASS</button>
     <button onclick="submitAnswer('MINGGU PI')">MINGGU PI</button>
-    <textarea id="reason" placeholder="Alasan lain..."></textarea>
+    <label>Tulis Alasan Lain:</label>
+    <textarea id="reason" placeholder="Alasanmu..."></textarea>
     <button onclick="submitAnswer('Alasan: ' + document.getElementById('reason').value)">KIRIM</button>
   </div>
 
-  <div id="seeAnswers" style="display: none;">
-    <h2>Jawaban:</h2>
-    <ul id="answersList"></ul>
+  <div id="seeAnswers">
+    <h1>Jawaban:</h1>
+    <ul id="answersList">
+      <li>1. ......</li>
+      <li>2. ......</li>
+      <li>3. ......</li>
+    </ul>
     <button onclick="location.href='https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u'">KELUAR</button>
   </div>
 
@@ -60,11 +96,11 @@
       }
       if (name === '200906') {
         document.getElementById('main').style.display = 'none';
-        document.getElementById('seeAnswers').style.display = 'block';
+        document.getElementById('seeAnswers').style.display = 'flex';
         updateAnswersList();
       } else {
         document.getElementById('main').style.display = 'none';
-        document.getElementById('choices').style.display = 'block';
+        document.getElementById('choices').style.display = 'flex';
       }
     }
 
@@ -81,7 +117,7 @@
 
       alert('Jawabanmu telah terkirim!');
       document.getElementById('choices').style.display = 'none';
-      document.getElementById('seeAnswers').style.display = 'block';
+      document.getElementById('seeAnswers').style.display = 'flex';
       updateAnswersList();
     }
 
