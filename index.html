@@ -24,6 +24,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column; /* Menambahkan ini agar semua elemen rapi */
             color: white; /* Warna teks menjadi putih */
         }
 
@@ -60,46 +61,71 @@
         button:hover {
             background-color: #555;
         }
+
+        /* Menyembunyikan elemen tertentu yang akan ditampilkan setelah klik tombol */
+        .hidden {
+            display: none;
+        }
+
+        /* Style untuk bagian yang menampilkan jawaban akhir */
+        .finalResponse {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Selamat Datang di Website Yayat</h1>
+        <h1>ANAK RUSAK</h1> <!-- Teks ini akan selalu muncul di setiap halaman -->
 
         <!-- Form input nama -->
-        <input type="text" id="username" placeholder="Masukkan Nama">
-        <br>
-        <button id="masukBtn">MASUK</button>
+        <div id="nameInputPage">
+            <input type="text" id="username" placeholder="Masukkan Nama">
+            <br>
+            <button id="masukBtn">MASUK</button>
+        </div>
 
-        <div id="responseArea" style="display: none;">
+        <!-- Halaman setelah tombol "MASUK" -->
+        <div id="responseArea" class="hidden">
             <button id="gassBtn">GASS</button>
             <button id="mingguBtn">MINGGU PI</button>
         </div>
 
-        <div id="finalResponse" style="display: none;">
+        <!-- Halaman jawaban final -->
+        <div id="finalResponse" class="hidden finalResponse">
             <p id="finalText"></p>
             <button id="keluarBtn">KELUAR</button>
         </div>
     </div>
 
     <script>
+        // Menyembunyikan halaman lain saat pertama kali tampil
+        document.getElementById("responseArea").classList.add("hidden");
+        document.getElementById("finalResponse").classList.add("hidden");
+
         // Event listener untuk tombol "MASUK"
         document.getElementById("masukBtn").addEventListener("click", function() {
             const name = document.getElementById("username").value;
             if (name === "200906") {
-                document.getElementById("responseArea").style.display = "block"; // Tampilkan tombol GASS dan MINGGU PI
+                // Jika nama yang dimasukkan adalah "200906", tampilkan halaman berikutnya
+                document.getElementById("nameInputPage").classList.add("hidden"); // Sembunyikan input nama
+                document.getElementById("responseArea").classList.remove("hidden"); // Tampilkan tombol GASS dan MINGGU PI
+            } else {
+                // Jika nama selain "200906", tetap lanjut tanpa tombol tambahan
+                document.getElementById("nameInputPage").classList.add("hidden");
+                document.getElementById("finalResponse").classList.remove("hidden");
+                document.getElementById("finalText").textContent = "Terima Kasih, Anda tidak dapat melihat jawaban.";
             }
         });
 
         // Event listener untuk tombol "GASS"
         document.getElementById("gassBtn").addEventListener("click", function() {
-            document.getElementById("finalResponse").style.display = "block"; // Tampilkan hasil
+            document.getElementById("finalResponse").classList.remove("hidden"); // Tampilkan hasil
             document.getElementById("finalText").textContent = "Gas Pale"; // Teks setelah GASS
         });
 
         // Event listener untuk tombol "MINGGU PI"
         document.getElementById("mingguBtn").addEventListener("click", function() {
-            document.getElementById("finalResponse").style.display = "block"; // Tampilkan hasil
+            document.getElementById("finalResponse").classList.remove("hidden"); // Tampilkan hasil
             document.getElementById("finalText").textContent = "Oke"; // Teks setelah MINGGU PI
         });
 
