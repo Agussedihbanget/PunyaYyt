@@ -42,6 +42,10 @@
         .answer-section {
             margin-top: 30px;
         }
+        .answer-list {
+            text-align: left;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -70,17 +74,15 @@
 
     <div class="container hidden" id="answerPage">
         <h1>Jawaban Jawaban</h1>
-        <div id="answerList"></div>
+        <div id="answerList" class="answer-list"></div>
         <button onclick="refreshAnswers()">REFRESH</button>
         <button onclick="keluar()">KELUAR</button>
     </div>
 
     <script>
         let userName = "";
-        let answers = [
-            { name: "200906", answer: "GASS", time: "10:00" },
-            { name: "YAYA", answer: "MINGGU PI", time: "10:30" }
-        ]; // Jawaban yang sudah ada
+        let answers = []; // Array untuk menyimpan jawaban
+        let allUsers = []; // Array untuk menyimpan nama pengguna yang sudah mengisi jawaban
 
         function nextPage() {
             userName = document.getElementById("nameInput").value;
@@ -110,6 +112,11 @@
             // Simpan jawaban baru ke dalam array
             let time = new Date().toLocaleTimeString();
             answers.push({ name: userName, answer: answer, time: time });
+
+            // Simpan nama pengguna yang sudah mengisi jawaban
+            if (!allUsers.includes(userName)) {
+                allUsers.push(userName);
+            }
         }
 
         function keluar() {
@@ -128,7 +135,12 @@
 
         function refreshAnswers() {
             // Membuat list jawaban terbaru
-            let listHtml = "";
+            let listHtml = "<h3>Daftar Nama Orang yang Sudah Menjawab:</h3>";
+            allUsers.forEach((name, index) => {
+                listHtml += `<p>${index + 1}. ${name}</p>`;
+            });
+
+            listHtml += "<h3>Jawaban yang Dikirim:</h3>";
             answers.forEach((entry, index) => {
                 listHtml += `<p>${index + 1}. ${entry.name} - ${entry.answer} - ${entry.time}</p>`;
             });
