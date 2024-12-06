@@ -44,12 +44,20 @@
             margin-bottom: 20px;
         }
 
-        input, button, textarea {
+        /* Menambahkan warna teks putih untuk input dan textarea */
+        input, textarea {
+            color: white; /* Warna teks menjadi putih */
+            background-color: rgba(0, 0, 0, 0.3); /* Background hitam transparan untuk kontras */
+            border: 1px solid #fff; /* Menambahkan border putih agar lebih jelas */
             padding: 10px;
             font-size: 16px;
             margin-top: 10px;
             width: 100%; /* Full width for input and button */
             max-width: 250px; /* Max width */
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #ccc; /* Warna placeholder lebih terang agar tetap terlihat */
         }
 
         button {
@@ -102,6 +110,9 @@
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
+            max-height: 300px; /* Set max height for scroll */
+            overflow-y: auto;
+            width: 100%;
         }
 
         .answer-list ul {
@@ -111,9 +122,24 @@
 
         .answer-list li {
             margin: 10px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        /* Refresh button style */
+        .answer-list li:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Refresh and Keluar button container */
+        .buttons-container-admin {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            width: 100%;
+        }
+
         .refresh-button {
             padding: 10px 20px;
             background-color: #444;
@@ -121,7 +147,15 @@
             font-size: 16px;
             border: none;
             cursor: pointer;
-            margin-top: 10px;
+        }
+
+        .delete-button {
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -161,8 +195,10 @@
                 <!-- Jawaban dari orang lain akan ditampilkan di sini -->
             </ul>
         </div>
-        <button class="refresh-button" onclick="refreshAnswers()">REFRESH</button>
-        <button class="keluar-button" onclick="exitSite()">KELUAR</button>
+        <div class="buttons-container-admin">
+            <button class="refresh-button" onclick="refreshAnswers()">REFRESH</button>
+            <button class="keluar-button" onclick="exitSite()">KELUAR</button>
+        </div>
     </div>
 
     <script>
@@ -205,38 +241,4 @@
                 alert("Alasan telah dikirim!");
                 // Go to the third page
                 document.getElementById("secondPage").style.display = "none";
-                document.getElementById("thirdPage").style.display = "block";
-            } else {
-                alert("Silakan tulis alasan terlebih dahulu!");
-            }
-        }
-
-        function viewAnswers() {
-            // Hide second page and show admin page with answers
-            document.getElementById("secondPage").style.display = "none";
-            document.getElementById("adminPage").style.display = "block";
-            displayAnswers();
-        }
-
-        function displayAnswers() {
-            var answerList = document.getElementById("answerList").querySelector("ul");
-            answerList.innerHTML = ""; // Clear previous answers
-
-            answers.forEach(function(answer, index) {
-                var listItem = document.createElement("li");
-                listItem.textContent = `${index + 1}. ${answer.name} - ${answer.answer} - ${answer.time}`;
-                answerList.appendChild(listItem);
-            });
-        }
-
-        function refreshAnswers() {
-            // Refresh the answer list
-            answers = JSON.parse(localStorage.getItem('answers')) || [];
-            displayAnswers();
-        }
-
-        function exitSite() {
-            // Redirect to WhatsApp link
-            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
-        }
-    </script>
+                document.getElementById("thirdPage").style.display =
