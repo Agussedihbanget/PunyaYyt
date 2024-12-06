@@ -1,26 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anak Rusak</title>
+    <title>ANAK RUSAK</title>
     <style>
-        /* Set the body to have no margin or padding */
         body {
             font-family: Arial, sans-serif;
-            color: white;
             margin: 0;
             padding: 0;
+            background-color: #000;
+            color: white;
             text-align: center;
             overflow: hidden;
-            height: 100vh; /* Full viewport height */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
-
-        /* Background Video Setup */
         #background-video {
             position: absolute;
             top: 0;
@@ -28,142 +21,127 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -1; /* Let video stay behind content */
+            z-index: -1;
         }
-
         h1 {
             font-size: 48px;
             margin-top: 20px;
         }
-
         h2 {
-            font-size: 36px;
-            margin-top: 10px;
-        }
-
-        p, button {
             font-size: 24px;
-            margin: 10px;
+            margin-top: 20px;
         }
-
-        button {
+        .button {
             background-color: #4CAF50;
-            color: white;
             border: none;
-            padding: 10px 20px;
+            color: white;
+            padding: 15px 32px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            margin: 10px 2px;
+            margin: 20px 10px;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 4px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        iframe {
+            border: none;
+            margin-top: 20px;
         }
 
-        input[type="text"] {
-            padding: 10px;
-            width: 60%;
-            margin-top: 10px;
-            border-radius: 5px;
+        #questionSection {
+            display: none;
+        }
+        #exitButton {
+            display: none;
+            margin-top: 30px;
+        }
+        #specialButtons {
+            display: none;
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
-    <!-- Background Video -->
-    <video autoplay muted loop id="background-video">
-        <source src="gg-gimang.mp4" type="video/mp4">
+    <!-- Video TikTok sebagai background -->
+    <video id="background-video" autoplay loop muted>
+        <source src="https://www.tiktok.com/embed/ZSjc9CUYp" type="video/mp4">
+        Your browser does not support the video tag.
     </video>
 
-    <!-- Main Content -->
     <h1>ANAK RUSAK</h1>
-    <h2>Selamat datang di Website Kami</h2>
-
-    <!-- Button to Start -->
-    <button onclick="showQuestions()">MASUK</button>
-
-    <!-- Input Section -->
-    <div id="questionSection" style="display: none;">
-        <p>Siapa Namamu?</p>
-        <input type="text" id="nameInput" placeholder="Masukkan Nama" />
-        <br>
-        <button onclick="showGreeting()">LANJUT</button>
-    </div>
-
-    <!-- Greeting Section -->
-    <div id="greetingSection" style="display: none;">
-        <p id="greetingText"></p>
-        <button onclick="showChoices()">LANJUT</button>
-    </div>
-
-    <!-- Choices Section -->
-    <div id="choicesSection" style="display: none;">
-        <p>Corner Hari Sabtu?</p>
-        <button onclick="showAnswer('GASS')">GASS</button>
-        <button onclick="showAnswer('MINGGU PI')">MINGGU PI</button>
+    <h2>Selamat datang, silakan masukkan nama</h2>
+    
+    <!-- Form input untuk nama -->
+    <form id="nameForm">
+        <input type="text" id="name" placeholder="Siapa namamu?" required>
+        <button type="submit" class="button">MASUK</button>
+    </form>
+    
+    <!-- Tempat untuk menampilkan pertanyaan setelah memasukkan nama -->
+    <div id="questionSection">
+        <p id="welcomeMessage"></p>
+        <h2>Corner Hari Sabtu?</h2>
+        <button class="button" onclick="showAnswer('GASS')">GASS</button>
+        <button class="button" onclick="showAnswer('MINGGU PI')">MINGGU PI</button>
         <br><br>
-        <input type="text" id="reasonInput" placeholder="Tulis alasanmu di sini..." />
-        <br>
-        <button onclick="submitReason()">Kirim Alasan</button>
-        <div id="reasonText"></div>
+        <textarea id="customAnswer" placeholder="Masukkan alasan kamu"></textarea>
+        <button class="button" onclick="submitCustomAnswer()">Kirim</button>
+    </div>
+    
+    <!-- Tombol KELUAR yang bisa diakses oleh semua orang -->
+    <div id="exitSection">
+        <button id="exitButton" class="button" onclick="exitWebsite()">KELUAR</button>
     </div>
 
-    <!-- End Section -->
-    <div id="endSection" style="display: none;">
-        <p id="finalAnswerText"></p>
-        <button onclick="exitWebsite()">KELUAR</button>
+    <!-- Tombol LANJUT dan LIHAT JAWABAN hanya muncul untuk nama "200906" -->
+    <div id="specialButtons">
+        <button class="button" onclick="goToNextPage()">LANJUT</button>
+        <button class="button" onclick="viewAnswers()">LIHAT JAWABAN</button>
     </div>
 
     <script>
-        // Function to show questions
-        function showQuestions() {
-            document.querySelector("button").style.display = "none"; // Hiding the "MASUK" button
-            document.getElementById("questionSection").style.display = "block";
-        }
+        document.getElementById('nameForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            document.getElementById('welcomeMessage').innerText = `Halo ${name}, selamat datang!`;
+            document.getElementById('questionSection').style.display = 'block';
+            document.getElementById('exitButton').style.display = 'block'; // Tombol keluar muncul
 
-        // Function to show greeting after name input
-        function showGreeting() {
-            var name = document.getElementById("nameInput").value;
-            document.getElementById("greetingText").innerText = "Halo " + name + ", selamat datang!";
-            document.getElementById("questionSection").style.display = "none";
-            document.getElementById("greetingSection").style.display = "block";
-        }
-
-        // Function to show choices section
-        function showChoices() {
-            document.getElementById("greetingSection").style.display = "none";
-            document.getElementById("choicesSection").style.display = "block";
-        }
-
-        // Function to show answer based on button click
-        function showAnswer(answer) {
-            var answerText = "";
-            if (answer === "GASS") {
-                answerText = "Gas Pale!";
-            } else if (answer === "MINGGU PI") {
-                answerText = "Oke";
+            if (name === "200906") {
+                // Untuk nama "200906", tampilkan tombol LANJUT dan LIHAT JAWABAN
+                document.getElementById('specialButtons').style.display = 'block';
             }
-            document.getElementById("reasonText").innerText = answerText;
-            showEndSection();
+        });
+
+        function showAnswer(answer) {
+            const answerMessage = answer === 'GASS' ? 'Gas Pale' : 'Oke';
+            alert(answerMessage);
         }
 
-        // Function to submit the user's reason
-        function submitReason() {
-            var reason = document.getElementById("reasonInput").value;
-            document.getElementById("reasonText").innerText = "Alasanmu: " + reason;
-            showEndSection();
+        function submitCustomAnswer() {
+            const customAnswer = document.getElementById('customAnswer').value;
+            if (customAnswer) {
+                alert("Alasan kamu telah dikirim: " + customAnswer);
+            } else {
+                alert("Tolong masukkan alasan kamu.");
+            }
         }
 
-        // Show the end section after answer is selected or reason is submitted
-        function showEndSection() {
-            document.getElementById("choicesSection").style.display = "none";
-            document.getElementById("endSection").style.display = "block";
-        }
-
-        // Exit the website when clicking "KELUAR"
         function exitWebsite() {
-            window.location.href = "about:blank"; // This will close the page
+            window.location.href = "about:blank"; // Mengarahkan ke halaman kosong
+        }
+
+        function goToNextPage() {
+            window.location.href = "nextPage.html"; // Ganti dengan halaman yang ingin dituju
+        }
+
+        function viewAnswers() {
+            window.location.href = "viewAnswers.html"; // Ganti dengan halaman untuk melihat jawaban
         }
     </script>
-
 </body>
 </html>
