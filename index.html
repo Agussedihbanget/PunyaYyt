@@ -84,6 +84,10 @@
 
         function nextPage() {
             userName = document.getElementById("nameInput").value;
+            if (userName === "") {
+                alert("Nama harus diisi!");
+                return; // Tidak lanjut ke halaman berikutnya jika nama kosong
+            }
             document.getElementById("firstPage").classList.add("hidden");
             document.getElementById("secondPage").classList.remove("hidden");
 
@@ -92,4 +96,44 @@
 
             // Menyembunyikan tombol "LIHAT JAWABAN" untuk selain 200906
             if (userName === "200906") {
-                document
+                document.getElementById("lihatJawabanBtn").classList.remove("hidden");
+            }
+        }
+
+        function answer(answer) {
+            document.getElementById("secondPage").classList.add("hidden");
+            document.getElementById("thirdPage").classList.remove("hidden");
+
+            // Menampilkan jawaban
+            document.getElementById("answerText").innerHTML = "Jawabanmu: " + answer;
+
+            // Simpan jawaban baru ke dalam array
+            let time = new Date().toLocaleTimeString();
+            answers.push({ name: userName, answer: answer, time: time });
+        }
+
+        function keluar() {
+            // Mengarahkan ke WhatsApp setelah keluar
+            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
+        }
+
+        function lihatJawaban() {
+            // Menyembunyikan halaman ketiga dan menampilkan halaman jawaban
+            document.getElementById("thirdPage").classList.add("hidden");
+            document.getElementById("answerPage").classList.remove("hidden");
+
+            // Menampilkan daftar jawaban
+            refreshAnswers();
+        }
+
+        function refreshAnswers() {
+            // Membuat list jawaban terbaru
+            let listHtml = "";
+            answers.forEach((entry, index) => {
+                listHtml += `<p>${index + 1}. ${entry.name} - ${entry.answer} - ${entry.time}</p>`;
+            });
+            document.getElementById("answerList").innerHTML = listHtml;
+        }
+    </script>
+</body>
+</html>
