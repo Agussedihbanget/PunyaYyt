@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Yayat</title>
     <style>
-        /* Set the background image from URL */
+        /* Set the background image */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-image: url('https://raw.githubusercontent.com/Agussedihbanget/PunyaYyt/refs/heads/main/website.png'); /* Ganti dengan URL gambar yang diinginkan */
@@ -27,15 +26,33 @@
             background: rgba(0, 0, 0, 0.5); /* Background transparan hitam agar teks bisa terlihat jelas */
             padding: 20px;
             border-radius: 10px;
+            width: 100%;
+            max-width: 600px; /* Membatasi lebar maksimal agar tidak terlalu lebar */
+            box-sizing: border-box;
         }
 
         h1, h2 {
             font-size: 36px;
+            margin-bottom: 20px;
         }
 
         input, button {
             padding: 10px;
             font-size: 16px;
+            margin-top: 10px;
+            width: 100%; /* Membuat lebar tombol dan input sama */
+            max-width: 250px; /* Membatasi lebar input dan tombol */
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* Styling untuk kolom alasan */
+        #reasonInput {
+            width: 100%;
+            max-width: 250px;
+            padding: 10px;
             margin-top: 10px;
         }
     </style>
@@ -60,12 +77,28 @@
                 document.querySelector("button").setAttribute("onclick", "sendAnswer()");
                 document.querySelector(".container").style.textAlign = "left";
                 document.getElementById("nameInput").style.display = "none"; // Sembunyikan input setelah mengklik "MASUK"
+                
+                // Menambahkan kolom alasan
+                var reasonLabel = document.createElement("label");
+                reasonLabel.innerText = "Tulis Alasan Lain";
+                reasonLabel.style.color = "white";
+                document.querySelector(".container").appendChild(reasonLabel);
+
+                var reasonInput = document.createElement("textarea");
+                reasonInput.id = "reasonInput";
+                reasonInput.placeholder = "Tulis alasanmu di sini...";
+                document.querySelector(".container").appendChild(reasonInput);
             }
         }
 
         function sendAnswer() {
-            alert("Jawaban terkirim!");
-            // Untuk logika tambahan, bisa disimpan dalam database atau localStorage
+            var reason = document.getElementById("reasonInput").value;
+            if (reason) {
+                alert("Jawaban terkirim!");
+                // Simpan jawaban di sini (misalnya di localStorage atau database)
+            } else {
+                alert("Silakan tulis alasan terlebih dahulu!");
+            }
         }
     </script>
 </body>
