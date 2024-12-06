@@ -72,76 +72,105 @@
         Your browser does not support the video tag.
     </video>
 
-    <h1>ANAK RUSAK</h1>
-    <h2>Selamat datang, silakan masukkan nama</h2>
-    
-    <!-- Form input untuk nama -->
-    <form id="nameForm">
-        <input type="text" id="name" placeholder="Siapa namamu?" required>
-        <button type="submit" class="button">MASUK</button>
-    </form>
-    
-    <!-- Tempat untuk menampilkan pertanyaan setelah memasukkan nama -->
-    <div id="questionSection">
-        <p id="welcomeMessage"></p>
-        <h2>Corner Hari Sabtu?</h2>
-        <button class="button" onclick="showAnswer('GASS')">GASS</button>
-        <button class="button" onclick="showAnswer('MINGGU PI')">MINGGU PI</button>
-        <br><br>
-        <textarea id="customAnswer" placeholder="Masukkan alasan kamu"></textarea>
-        <button class="button" onclick="submitCustomAnswer()">Kirim</button>
-    </div>
-    
-    <!-- Tombol KELUAR yang bisa diakses oleh semua orang -->
-    <div id="exitSection">
-        <button id="exitButton" class="button" onclick="exitWebsite()">KELUAR</button>
-    </div>
-
-    <!-- Tombol LANJUT dan LIHAT JAWABAN hanya muncul untuk nama "200906" -->
-    <div id="specialButtons">
-        <button class="button" onclick="goToNextPage()">LANJUT</button>
-        <button class="button" onclick="viewAnswers()">LIHAT JAWABAN</button>
-    </div>
+    <div id="content"></div>
 
     <script>
-        document.getElementById('nameForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            document.getElementById('welcomeMessage').innerText = `Halo ${name}, selamat datang!`;
-            document.getElementById('questionSection').style.display = 'block';
-            document.getElementById('exitButton').style.display = 'block'; // Tombol keluar muncul
-
-            if (name === "200906") {
-                // Untuk nama "200906", tampilkan tombol LANJUT dan LIHAT JAWABAN
-                document.getElementById('specialButtons').style.display = 'block';
-            }
-        });
-
-        function showAnswer(answer) {
-            const answerMessage = answer === 'GASS' ? 'Gas Pale' : 'Oke';
-            alert(answerMessage);
+        // Fungsi untuk menghapus semua konten sebelumnya dan menampilkan konten baru
+        function loadContent(content) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = ''; // Menghapus konten lama
+            contentDiv.innerHTML = content; // Menampilkan konten baru
         }
 
+        // Halaman pertama: Masukkan nama
+        function showNameForm() {
+            loadContent(`
+                <h1>ANAK RUSAK</h1>
+                <h2>Selamat datang, silakan masukkan nama</h2>
+                <form id="nameForm">
+                    <input type="text" id="name" placeholder="Siapa namamu?" required>
+                    <button type="submit" class="button">MASUK</button>
+                </form>
+            `);
+
+            document.getElementById('nameForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const name = document.getElementById('name').value;
+                if (name) {
+                    showQuestionPage(name);
+                }
+            });
+        }
+
+        // Halaman pertanyaan setelah nama dimasukkan
+        function showQuestionPage(name) {
+            let questionContent = `
+                <h2>Halo ${name}, Corner Hari Sabtu?</h2>
+                <button class="button" onclick="showAnswer('GASS')">GASS</button>
+                <button class="button" onclick="showAnswer('MINGGU PI')">MINGGU PI</button>
+                <br><br>
+                <textarea id="customAnswer" placeholder="Masukkan alasan kamu"></textarea>
+                <button class="button" onclick="submitCustomAnswer()">Kirim</button>
+            `;
+            
+            // Jika nama adalah "200906", tampilkan tombol tambahan
+            if (name === "200906") {
+                questionContent += `
+                    <br><br>
+                    <button class="button" onclick="goToNextPage()">LANJUT</button>
+                    <button class="button" onclick="viewAnswers()">LIHAT JAWABAN</button>
+                `;
+            }
+
+            loadContent(questionContent);
+        }
+
+        // Fungsi untuk menampilkan jawaban setelah tombol "GASS" atau "MINGGU PI" ditekan
+        function showAnswer(answer) {
+            let answerMessage = answer === 'GASS' ? 'Gas Pale' : 'Oke';
+            loadContent(`
+                <h2>${answerMessage}</h2>
+                <button class="button" onclick="exitWebsite()">KELUAR</button>
+            `);
+        }
+
+        // Fungsi untuk mengirim alasan custom
         function submitCustomAnswer() {
             const customAnswer = document.getElementById('customAnswer').value;
             if (customAnswer) {
-                alert("Alasan kamu telah dikirim: " + customAnswer);
+                loadContent(`
+                    <h2>Alasan kamu telah dikirim: ${customAnswer}</h2>
+                    <button class="button" onclick="exitWebsite()">KELUAR</button>
+                `);
             } else {
                 alert("Tolong masukkan alasan kamu.");
             }
         }
 
-        function exitWebsite() {
-            window.location.href = "about:blank"; // Mengarahkan ke halaman kosong
-        }
-
+        // Fungsi untuk melanjutkan ke halaman berikutnya
         function goToNextPage() {
-            window.location.href = "nextPage.html"; // Ganti dengan halaman yang ingin dituju
+            loadContent(`
+                <h2>Ini adalah halaman LANJUT, bisa diakses oleh semua orang.</h2>
+                <button class="button" onclick="exitWebsite()">KELUAR</button>
+            `);
         }
 
+        // Fungsi untuk melihat jawaban, hanya bisa diakses oleh "200906"
         function viewAnswers() {
-            window.location.href = "viewAnswers.html"; // Ganti dengan halaman untuk melihat jawaban
+            loadContent(`
+                <h2>Jawaban dari orang-orang yang telah mengisi:</h2>
+                <p>Ini adalah jawaban yang kamu lihat karena nama kamu adalah 200906.</p>
+                <button class="button" onclick="exitWebsite()">KELUAR</button>
+            `);
         }
+
+        // Fungsi untuk keluar dari website
+        function exitWebsite() {
+            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u"; // Mengarahkan ke link WhatsApp
+        }
+
+        // Tampilkan halaman pertama ketika website dimuat
+        showNameForm();
     </script>
 </body>
 </html>
