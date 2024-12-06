@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anak Rusak</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -14,7 +19,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
+      position: relative; /* Tambah ini agar elemen lain tetap muncul */
     }
     body::before {
       content: '';
@@ -25,13 +30,14 @@
       height: 100%;
       background: url('website.png') no-repeat center center fixed;
       background-size: cover;
-      z-index: -1; /* Pastikan background ada di belakang */
+      z-index: -1; /* Pastikan background tetap di belakang */
     }
     #main, #choices, #seeAnswers {
+      position: relative;
       display: none;
       flex-direction: column;
       align-items: center;
-      z-index: 1; /* Elemen-elemen utama tetap di depan */
+      z-index: 1; /* Pastikan elemen muncul di depan */
     }
     h1 {
       font-size: 32px;
@@ -48,6 +54,7 @@
       background-color: rgba(0, 0, 0, 0.5);
       border: 1px solid white;
       border-radius: 5px;
+      text-align: center;
     }
     button {
       margin: 10px 0;
@@ -89,9 +96,9 @@
   <div id="seeAnswers">
     <h1>Jawaban:</h1>
     <ul id="answersList">
-      <li>1. ......</li>
-      <li>2. ......</li>
-      <li>3. ......</li>
+      <li>1. .......</li>
+      <li>2. .......</li>
+      <li>3. .......</li>
     </ul>
     <button onclick="location.href='https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u'">KELUAR</button>
   </div>
@@ -138,7 +145,7 @@
       if (answers.length === 0) {
         for (let i = 0; i < 3; i++) {
           const li = document.createElement('li');
-          li.textContent = `${i + 1}. ......`;
+          li.textContent = `${i + 1}. .......`;
           list.appendChild(li);
         }
       } else {
