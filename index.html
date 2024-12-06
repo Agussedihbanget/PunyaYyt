@@ -1,150 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANAK RUSAK</title>
+    <title>Website Yayat</title>
     <style>
         body {
-            background-color: black;
-            color: white;
             font-family: Arial, sans-serif;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://raw.githubusercontent.com/Agussedihbanget/PunyaYyt/refs/heads/main/website.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+        h1, h2 {
+            font-size: 48px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
         }
         .container {
-            width: 100%;
-            margin-top: 50px;
-        }
-        .hidden {
-            display: none;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            font-size: 18px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        input[type="text"] {
-            padding: 10px;
-            font-size: 18px;
-            width: 80%;
-            margin: 10px 0;
-            background-color: #333;
-            color: white;
-            border: 1px solid #ccc;
-        }
-        .answer-section {
-            margin-top: 30px;
-        }
-        .answer-list {
-            text-align: left;
-            margin-top: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-
-    <div class="container" id="firstPage">
-        <h1>ANAK RUSAK</h1>
-        <p>Masukkan nama kamu:</p>
-        <input type="text" id="nameInput" placeholder="Siapa namamu?">
+    <div class="container">
+        <h1>Website Yayat</h1>
+        <h2>Siapa Namamu?</h2>
+        <input type="text" id="nameInput" placeholder="Masukkan Nama">
         <br>
         <button onclick="nextPage()">MASUK</button>
     </div>
 
-    <div class="container hidden" id="secondPage">
-        <h1>Selamat datang!</h1>
-        <p id="welcomeText"></p>
-        <button class="hidden" id="lihatJawabanBtn" onclick="lihatJawaban()">LIHAT JAWABAN</button>
-        <button id="gassBtn" onclick="answer('GASS')">GASS</button>
-        <button id="mingguPiBtn" onclick="answer('MINGGU PI')">MINGGU PI</button>
-    </div>
-
-    <div class="container hidden" id="thirdPage">
-        <h1>Hasil Jawaban</h1>
-        <p id="answerText"></p>
-        <button onclick="keluar()">KELUAR</button>
-    </div>
-
-    <div class="container hidden" id="answerPage">
-        <h1>Jawaban Jawaban</h1>
-        <div id="answerList" class="answer-list"></div>
-        <button onclick="refreshAnswers()">REFRESH</button>
-        <button onclick="keluar()">KELUAR</button>
-    </div>
-
     <script>
-        let userName = "";
-        let answers = []; // Array untuk menyimpan jawaban
-        let allUsers = []; // Array untuk menyimpan nama pengguna yang sudah mengisi jawaban
-
         function nextPage() {
-            userName = document.getElementById("nameInput").value;
-            if (userName === "") {
-                alert("Nama harus diisi!");
-                return; // Tidak lanjut ke halaman berikutnya jika nama kosong
-            }
-            document.getElementById("firstPage").classList.add("hidden");
-            document.getElementById("secondPage").classList.remove("hidden");
-
-            // Hapus teks "Selamat datang!" dan ganti dengan "MAUKO PERGI CORNER HARI SABTU?"
-            document.getElementById("welcomeText").innerHTML = "MAUKO PERGI CORNER HARI SABTU?";
-
-            // Menyembunyikan tombol "LIHAT JAWABAN" untuk selain 200906
-            if (userName === "200906") {
-                document.getElementById("lihatJawabanBtn").classList.remove("hidden");
+            var name = document.getElementById("nameInput").value;
+            if (name) {
+                document.querySelector("h1").innerText = "MAUKO PERGI CORNER HARI SABTU?";
+                document.querySelector("h2").innerText = "Tulis Alasan Lain";
+                document.querySelector("button").innerText = "KIRIM";
+                document.querySelector("button").setAttribute("onclick", "sendAnswer()");
+                document.querySelector(".container").style.textAlign = "left";
+                document.getElementById("nameInput").style.display = "none";
             }
         }
 
-        function answer(answer) {
-            document.getElementById("secondPage").classList.add("hidden");
-            document.getElementById("thirdPage").classList.remove("hidden");
-
-            // Menampilkan jawaban
-            document.getElementById("answerText").innerHTML = "Jawabanmu: " + answer;
-
-            // Simpan jawaban baru ke dalam array
-            let time = new Date().toLocaleTimeString();
-            answers.push({ name: userName, answer: answer, time: time });
-
-            // Simpan nama pengguna yang sudah mengisi jawaban
-            if (!allUsers.includes(userName)) {
-                allUsers.push(userName);
-            }
-        }
-
-        function keluar() {
-            // Mengarahkan ke WhatsApp setelah keluar
-            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
-        }
-
-        function lihatJawaban() {
-            // Menyembunyikan halaman ketiga dan menampilkan halaman jawaban
-            document.getElementById("thirdPage").classList.add("hidden");
-            document.getElementById("answerPage").classList.remove("hidden");
-
-            // Menampilkan daftar jawaban
-            refreshAnswers();
-        }
-
-        function refreshAnswers() {
-            // Membuat list jawaban terbaru
-            let listHtml = "<h3>Daftar Nama Orang yang Sudah Menjawab:</h3>";
-            allUsers.forEach((name, index) => {
-                listHtml += `<p>${index + 1}. ${name}</p>`;
-            });
-
-            listHtml += "<h3>Jawaban yang Dikirim:</h3>";
-            answers.forEach((entry, index) => {
-                listHtml += `<p>${index + 1}. ${entry.name} - ${entry.answer} - ${entry.time}</p>`;
-            });
-            document.getElementById("answerList").innerHTML = listHtml;
+        function sendAnswer() {
+            alert("Jawaban terkirim!");
+            // Untuk logika tambahan, bisa disimpan dalam database atau localStorage
         }
     </script>
 </body>
