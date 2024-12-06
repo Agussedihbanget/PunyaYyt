@@ -112,6 +112,17 @@
         .answer-list li {
             margin: 10px 0;
         }
+
+        /* Refresh button style */
+        .refresh-button {
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -150,6 +161,7 @@
                 <!-- Jawaban dari orang lain akan ditampilkan di sini -->
             </ul>
         </div>
+        <button class="refresh-button" onclick="refreshAnswers()">REFRESH</button>
         <button class="keluar-button" onclick="exitSite()">KELUAR</button>
     </div>
 
@@ -210,6 +222,11 @@
                 listItem.textContent = `${index + 1}. ${answer.name} - ${answer.answer} - ${answer.time}`;
                 answerList.appendChild(listItem);
             });
+        }
+
+        function refreshAnswers() {
+            // Refresh the answer list
+            displayAnswers();
         }
 
         function exitSite() {
