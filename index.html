@@ -102,9 +102,6 @@
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            max-height: 300px; /* Set max height for scroll */
-            overflow-y: auto;
-            width: 100%;
         }
 
         .answer-list ul {
@@ -114,24 +111,9 @@
 
         .answer-list li {
             margin: 10px 0;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            cursor: pointer;
         }
 
-        .answer-list li:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Refresh and Keluar button container */
-        .buttons-container-admin {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            width: 100%;
-        }
-
+        /* Refresh button style */
         .refresh-button {
             padding: 10px 20px;
             background-color: #444;
@@ -139,15 +121,7 @@
             font-size: 16px;
             border: none;
             cursor: pointer;
-        }
-
-        .delete-button {
-            padding: 10px 20px;
-            background-color: red;
-            color: white;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -187,10 +161,8 @@
                 <!-- Jawaban dari orang lain akan ditampilkan di sini -->
             </ul>
         </div>
-        <div class="buttons-container-admin">
-            <button class="refresh-button" onclick="refreshAnswers()">REFRESH</button>
-            <button class="keluar-button" onclick="exitSite()">KELUAR</button>
-        </div>
+        <button class="refresh-button" onclick="refreshAnswers()">REFRESH</button>
+        <button class="keluar-button" onclick="exitSite()">KELUAR</button>
     </div>
 
     <script>
@@ -251,4 +223,20 @@
             answerList.innerHTML = ""; // Clear previous answers
 
             answers.forEach(function(answer, index) {
-                var
+                var listItem = document.createElement("li");
+                listItem.textContent = `${index + 1}. ${answer.name} - ${answer.answer} - ${answer.time}`;
+                answerList.appendChild(listItem);
+            });
+        }
+
+        function refreshAnswers() {
+            // Refresh the answer list
+            answers = JSON.parse(localStorage.getItem('answers')) || [];
+            displayAnswers();
+        }
+
+        function exitSite() {
+            // Redirect to WhatsApp link
+            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
+        }
+    </script>
