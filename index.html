@@ -5,27 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anak Rusak</title>
     <style>
+        /* Set the body to have no margin or padding */
         body {
             font-family: Arial, sans-serif;
             color: white;
             margin: 0;
             padding: 0;
             text-align: center;
-            background: url('gg-gimang.mp4') no-repeat center center fixed;
-            background-size: cover;
+            overflow: hidden;
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
+
+        /* Background Video Setup */
+        #background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* Let video stay behind content */
+        }
+
         h1 {
-            font-size: 48px; /* Ukuran font besar untuk "ANAK RUSAK" */
+            font-size: 48px;
             margin-top: 20px;
         }
+
         h2 {
-            font-size: 36px; /* Ukuran font lebih kecil dari h1 untuk "Selamat Datang" */
+            font-size: 36px;
             margin-top: 10px;
         }
+
         p, button {
             font-size: 24px;
             margin: 10px;
         }
+
         button {
             background-color: #4CAF50;
             color: white;
@@ -39,29 +59,29 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         input[type="text"] {
             padding: 10px;
             width: 60%;
             margin-top: 10px;
             border-radius: 5px;
         }
-        .answer {
-            margin-top: 20px;
-            font-size: 20px;
-        }
-        #answerSection {
-            display: none;
-        }
     </style>
 </head>
 <body>
+    <!-- Background Video -->
+    <video autoplay muted loop id="background-video">
+        <source src="gg-gimang.mp4" type="video/mp4">
+    </video>
 
+    <!-- Main Content -->
     <h1>ANAK RUSAK</h1>
     <h2>Selamat datang di Website Kami</h2>
 
-    <!-- Tombol Masuk -->
+    <!-- Button to Start -->
     <button onclick="showQuestions()">MASUK</button>
 
+    <!-- Input Section -->
     <div id="questionSection" style="display: none;">
         <p>Siapa Namamu?</p>
         <input type="text" id="nameInput" placeholder="Masukkan Nama" />
@@ -69,18 +89,13 @@
         <button onclick="showGreeting()">LANJUT</button>
     </div>
 
+    <!-- Greeting Section -->
     <div id="greetingSection" style="display: none;">
         <p id="greetingText"></p>
         <button onclick="showChoices()">LANJUT</button>
     </div>
 
-    <div id="answerSection">
-        <p>Jawaban yang dipilih:</p>
-        <p id="storedAnswer"></p>
-        <p>Alasan yang ditulis:</p>
-        <p id="storedReason"></p>
-    </div>
-
+    <!-- Choices Section -->
     <div id="choicesSection" style="display: none;">
         <p>Corner Hari Sabtu?</p>
         <button onclick="showAnswer('GASS')">GASS</button>
@@ -89,35 +104,37 @@
         <input type="text" id="reasonInput" placeholder="Tulis alasanmu di sini..." />
         <br>
         <button onclick="submitReason()">Kirim Alasan</button>
-        <div id="reasonText" class="answer"></div>
+        <div id="reasonText"></div>
+    </div>
+
+    <!-- End Section -->
+    <div id="endSection" style="display: none;">
+        <p id="finalAnswerText"></p>
+        <button onclick="exitWebsite()">KELUAR</button>
     </div>
 
     <script>
+        // Function to show questions
         function showQuestions() {
             document.querySelector("button").style.display = "none"; // Hiding the "MASUK" button
             document.getElementById("questionSection").style.display = "block";
         }
 
+        // Function to show greeting after name input
         function showGreeting() {
             var name = document.getElementById("nameInput").value;
-            // Mengecek apakah nama yang dimasukkan adalah "200906" (nama pembuat)
-            if (name === "200906") {
-                document.getElementById("questionSection").style.display = "none";
-                document.getElementById("greetingText").innerText = "Halo " + name + ", selamat datang! (Pembuat)";
-                document.getElementById("greetingSection").style.display = "block";
-                document.getElementById("answerSection").style.display = "block"; // Menampilkan jawaban dan alasan untuk pembuat
-            } else {
-                document.getElementById("greetingText").innerText = "Halo " + name + ", selamat datang!";
-                document.getElementById("questionSection").style.display = "none";
-                document.getElementById("greetingSection").style.display = "block";
-            }
+            document.getElementById("greetingText").innerText = "Halo " + name + ", selamat datang!";
+            document.getElementById("questionSection").style.display = "none";
+            document.getElementById("greetingSection").style.display = "block";
         }
 
+        // Function to show choices section
         function showChoices() {
             document.getElementById("greetingSection").style.display = "none";
             document.getElementById("choicesSection").style.display = "block";
         }
 
+        // Function to show answer based on button click
         function showAnswer(answer) {
             var answerText = "";
             if (answer === "GASS") {
@@ -126,15 +143,25 @@
                 answerText = "Oke";
             }
             document.getElementById("reasonText").innerText = answerText;
-            // Menyimpan jawaban di halaman
-            document.getElementById("storedAnswer").innerText = answerText;
+            showEndSection();
         }
 
+        // Function to submit the user's reason
         function submitReason() {
             var reason = document.getElementById("reasonInput").value;
             document.getElementById("reasonText").innerText = "Alasanmu: " + reason;
-            // Menyimpan alasan di halaman
-            document.getElementById("storedReason").innerText = reason;
+            showEndSection();
+        }
+
+        // Show the end section after answer is selected or reason is submitted
+        function showEndSection() {
+            document.getElementById("choicesSection").style.display = "none";
+            document.getElementById("endSection").style.display = "block";
+        }
+
+        // Exit the website when clicking "KELUAR"
+        function exitWebsite() {
+            window.location.href = "about:blank"; // This will close the page
         }
     </script>
 
