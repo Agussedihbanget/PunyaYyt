@@ -137,8 +137,8 @@
     <div class="container" id="secondPage" style="display: none;">
         <h2>MAUKO PERGI CORNER HARI SABTU?</h2>
         <div class="buttons-container">
-            <button onclick="nextPageToThird()">GASS</button>
-            <button onclick="nextPageToThird()">TIDAK</button>
+            <button onclick="nextPageToThird('GASS')">GASS</button>
+            <button onclick="nextPageToThird('TIDAK')">TIDAK</button>
         </div>
         <div class="reason-container" id="reasonForm">
             <h2>Kirim Alasan Lain</h2>
@@ -166,7 +166,8 @@
     </div>
 
     <script>
-        var answers = [];
+        // Retrieve the answers from localStorage or initialize if empty
+        var answers = JSON.parse(localStorage.getItem('answers')) || [];
 
         function nextPage() {
             var name = document.getElementById("nameInput").value;
@@ -181,11 +182,13 @@
             }
         }
 
-        function nextPageToThird() {
-            // Save the answer (GASS or TIDAK)
+        function nextPageToThird(answer) {
             var name = document.getElementById("nameInput").value;
-            var answer = event.target.innerText; // Get the button text (GASS or TIDAK)
+            // Save the answer (GASS or TIDAK) in localStorage
             answers.push({ name: name, answer: answer, time: new Date().toLocaleTimeString() });
+
+            // Save to localStorage
+            localStorage.setItem('answers', JSON.stringify(answers));
 
             // Move to the third page
             document.getElementById("secondPage").style.display = "none";
@@ -197,6 +200,8 @@
             var name = document.getElementById("nameInput").value;
             if (reason) {
                 answers.push({ name: name, answer: reason, time: new Date().toLocaleTimeString() });
+                // Save to localStorage
+                localStorage.setItem('answers', JSON.stringify(answers));
                 alert("Alasan telah dikirim!");
                 // Go to the third page
                 document.getElementById("secondPage").style.display = "none";
@@ -226,6 +231,7 @@
 
         function refreshAnswers() {
             // Refresh the answer list
+            answers = JSON.parse(localStorage.getItem('answers')) || [];
             displayAnswers();
         }
 
@@ -234,5 +240,3 @@
             window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
         }
     </script>
-</body>
-</html>
