@@ -14,16 +14,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-image: url('https://raw.githubusercontent.com/Agussedihbanget/PunyaYyt/refs/heads/main/website.png'); /* Ganti dengan URL gambar yang diinginkan */
-            background-size: cover;
-            background-position: center;
+            background-color: black; /* Background warna hitam */
             color: white;
         }
 
         /* Container Styling */
         .container {
             text-align: center;
-            background: rgba(0, 0, 0, 0.5); /* Background transparan hitam agar teks bisa terlihat jelas */
+            background: rgba(0, 0, 0, 0.7); /* Background transparan hitam agar teks bisa terlihat jelas */
             padding: 20px;
             border-radius: 10px;
             width: 100%;
@@ -46,7 +44,7 @@
             margin-bottom: 20px;
         }
 
-        input, button {
+        input, button, textarea {
             padding: 10px;
             font-size: 16px;
             margin-top: 10px;
@@ -73,6 +71,26 @@
             color: white;
             font-size: 18px;
         }
+
+        /* Posisi tombol di bawah */
+        .buttons-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .reason-container {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .kirim-container {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -84,35 +102,46 @@
         <button onclick="nextPage()">MASUK</button>
     </div>
 
+    <div class="container" id="secondPage" style="display: none;">
+        <h2>MAUKO PERGI CORNER HARI SABTU?</h2>
+        <div class="buttons-container">
+            <button onclick="showReason()">GASS</button>
+            <button onclick="exitSite()">TIDAK</button>
+        </div>
+        <div class="reason-container" id="reasonForm">
+            <h2>Kirim Alasan Lain</h2>
+            <textarea id="reasonInput" placeholder="Tulis alasanmu di sini..."></textarea>
+            <div class="kirim-container">
+                <button onclick="sendReason()">KIRIM</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function nextPage() {
             var name = document.getElementById("nameInput").value;
             if (name) {
-                // Setelah menekan tombol "MASUK"
-                document.querySelector("h1").innerText = "MAUKO PERGI CORNER HARI SABTU?";
-                document.querySelector("h2").innerText = "Tulis Alasan Lain";
-                document.querySelector("button").innerText = "KIRIM";
-                document.querySelector("button").setAttribute("onclick", "sendAnswer()");
-                document.querySelector(".container").style.textAlign = "left";
-                document.getElementById("nameInput").style.display = "none"; // Sembunyikan input setelah mengklik "MASUK"
-                
-                // Menghapus teks yang sebelumnya muncul lebih dari sekali
-                var reasonLabel = document.createElement("label");
-                reasonLabel.innerText = "Tulis Alasan Lain";
-                document.querySelector(".container").appendChild(reasonLabel);
-
-                var reasonInput = document.createElement("textarea");
-                reasonInput.id = "reasonInput";
-                reasonInput.placeholder = "Tulis alasanmu di sini...";
-                document.querySelector(".container").appendChild(reasonInput);
+                // Menyembunyikan halaman pertama dan menampilkan halaman kedua
+                document.querySelector(".container").style.display = "none";
+                document.getElementById("secondPage").style.display = "block";
             }
         }
 
-        function sendAnswer() {
+        function showReason() {
+            // Menampilkan form alasan setelah menekan tombol "GASS"
+            document.getElementById("reasonForm").style.display = "block";
+        }
+
+        function exitSite() {
+            // Untuk keluar, arahkan ke link WhatsApp
+            window.location.href = "https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u";
+        }
+
+        function sendReason() {
             var reason = document.getElementById("reasonInput").value;
             if (reason) {
-                alert("Jawaban terkirim!");
-                // Simpan jawaban di sini (misalnya di localStorage atau database)
+                alert("Alasan telah dikirim!");
+                // Anda bisa menyimpan alasan di sini, misalnya menggunakan localStorage atau API
             } else {
                 alert("Silakan tulis alasan terlebih dahulu!");
             }
