@@ -1,162 +1,142 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anak Rusak</title>
     <style>
-        /* CSS untuk styling */
         body {
+            font-family: Arial, sans-serif;
+            color: white;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background: url('malam.png') no-repeat center center fixed; /* Ganti dengan nama file background lo */
-            background-size: cover;
-            overflow: hidden;
-        }
-
-        #container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             text-align: center;
+            background: url('gg-gimang.mp4') no-repeat center center fixed;
+            background-size: cover;
         }
-
-        button {
-            padding: 10px 20px;
-            font-size: 18px;
-            color: white;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        input {
-            padding: 10px;
-            font-size: 16px;
-            margin: 10px 0;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        h1 {
+            font-size: 48px; /* Ukuran font besar untuk "ANAK RUSAK" */
             margin-top: 20px;
         }
-
-        /* Efek Kunang-Kunang */
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background-color: yellow;
-            opacity: 0.7;
-            animation: sparkle 2s infinite;
+        h2 {
+            font-size: 36px; /* Ukuran font lebih kecil dari h1 untuk "Selamat Datang" */
+            margin-top: 10px;
         }
-
-        @keyframes sparkle {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 0.7;
-            }
-            50% {
-                transform: translateY(-50px) scale(1.5);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0) scale(1);
-                opacity: 0.7;
-            }
+        p, button {
+            font-size: 24px;
+            margin: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .answer {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #answerSection {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <div id="step1">
-            <button onclick="showForm()">MASUK</button>
-        </div>
 
-        <div id="step2" class="hidden">
-            <p>Siapa namamu?</p>
-            <input type="text" id="nama" placeholder="Masukkan nama...">
-            <button onclick="showResult()">LANJUT</button>
-        </div>
+    <h1>ANAK RUSAK</h1>
+    <h2>Selamat datang di Website Kami</h2>
 
-        <div id="step3" class="hidden">
-            <p id="greeting"></p>
-            <p>Corner Hari Sabtu?</p>
-            <div class="button-container">
-                <button onclick="gass()">GASS</button>
-                <button onclick="minggu()">MINGGU PI</button>
-            </div>
-        </div>
+    <!-- Tombol Masuk -->
+    <button onclick="showQuestions()">MASUK</button>
+
+    <div id="questionSection" style="display: none;">
+        <p>Siapa Namamu?</p>
+        <input type="text" id="nameInput" placeholder="Masukkan Nama" />
+        <br>
+        <button onclick="showGreeting()">LANJUT</button>
     </div>
 
-    <!-- JavaScript untuk efek kunang-kunang -->
+    <div id="greetingSection" style="display: none;">
+        <p id="greetingText"></p>
+        <button onclick="showChoices()">LANJUT</button>
+    </div>
+
+    <div id="answerSection">
+        <p>Jawaban yang dipilih:</p>
+        <p id="storedAnswer"></p>
+        <p>Alasan yang ditulis:</p>
+        <p id="storedReason"></p>
+    </div>
+
+    <div id="choicesSection" style="display: none;">
+        <p>Corner Hari Sabtu?</p>
+        <button onclick="showAnswer('GASS')">GASS</button>
+        <button onclick="showAnswer('MINGGU PI')">MINGGU PI</button>
+        <br><br>
+        <input type="text" id="reasonInput" placeholder="Tulis alasanmu di sini..." />
+        <br>
+        <button onclick="submitReason()">Kirim Alasan</button>
+        <div id="reasonText" class="answer"></div>
+    </div>
+
     <script>
-        // Fungsi untuk menambahkan partikel kunang-kunang
-        function createFireflies() {
-            const numberOfParticles = 30; // jumlah kunang-kunang
-            const container = document.body;
+        function showQuestions() {
+            document.querySelector("button").style.display = "none"; // Hiding the "MASUK" button
+            document.getElementById("questionSection").style.display = "block";
+        }
 
-            for (let i = 0; i < numberOfParticles; i++) {
-                const particle = document.createElement("div");
-                particle.classList.add("particle");
-
-                // Posisi acak untuk setiap partikel
-                const size = Math.random() * 10 + 5; // ukuran partikel acak
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.top = `${Math.random() * 100}%`;
-                particle.style.left = `${Math.random() * 100}%`;
-
-                container.appendChild(particle);
-
-                // Animasi menghilang dan muncul acak
-                setTimeout(() => {
-                    particle.style.animationDuration = `${Math.random() * 2 + 1}s`;
-                }, 10);
+        function showGreeting() {
+            var name = document.getElementById("nameInput").value;
+            // Mengecek apakah nama yang dimasukkan adalah "200906" (nama pembuat)
+            if (name === "200906") {
+                document.getElementById("questionSection").style.display = "none";
+                document.getElementById("greetingText").innerText = "Halo " + name + ", selamat datang! (Pembuat)";
+                document.getElementById("greetingSection").style.display = "block";
+                document.getElementById("answerSection").style.display = "block"; // Menampilkan jawaban dan alasan untuk pembuat
+            } else {
+                document.getElementById("greetingText").innerText = "Halo " + name + ", selamat datang!";
+                document.getElementById("questionSection").style.display = "none";
+                document.getElementById("greetingSection").style.display = "block";
             }
         }
 
-        // Panggil fungsi untuk membuat kunang-kunang
-        createFireflies();
-
-        // Fungsi lain yang ada di kode sebelumnya
-        function showForm() {
-            document.getElementById("step1").classList.add("hidden");
-            document.getElementById("step2").classList.remove("hidden");
+        function showChoices() {
+            document.getElementById("greetingSection").style.display = "none";
+            document.getElementById("choicesSection").style.display = "block";
         }
 
-        function showResult() {
-            const nama = document.getElementById("nama").value;
-            if (nama.trim() === "") {
-                alert("Nama tidak boleh kosong!");
-                return;
+        function showAnswer(answer) {
+            var answerText = "";
+            if (answer === "GASS") {
+                answerText = "Gas Pale!";
+            } else if (answer === "MINGGU PI") {
+                answerText = "Oke";
             }
-            document.getElementById("step2").classList.add("hidden");
-            document.getElementById("step3").classList.remove("hidden");
-            document.getElementById("greeting").innerText = `Halo, ${nama}!`;
+            document.getElementById("reasonText").innerText = answerText;
+            // Menyimpan jawaban di halaman
+            document.getElementById("storedAnswer").innerText = answerText;
         }
 
-        function gass() {
-            alert("Siap gas hari Sabtu!");
-        }
-
-        function minggu() {
-            alert("Kita tunda ke Minggu, Bro!");
+        function submitReason() {
+            var reason = document.getElementById("reasonInput").value;
+            document.getElementById("reasonText").innerText = "Alasanmu: " + reason;
+            // Menyimpan alasan di halaman
+            document.getElementById("storedReason").innerText = reason;
         }
     </script>
+
 </body>
 </html>
