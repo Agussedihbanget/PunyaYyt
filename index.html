@@ -1,168 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anak Rusak</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-      background-color: black;
-      color: white;
-    }
-    /* Bintik-bintik berkedip */
-    body::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(white, transparent) 1px 1px;
-      background-size: 4px 4px;
-      opacity: 0.8;
-      animation: twinkling 2s infinite;
-      z-index: -1;
-    }
-    @keyframes twinkling {
-      0% { opacity: 0.5; }
-      50% { opacity: 1; }
-      100% { opacity: 0.5; }
-    }
-    #main, #choices, #seeAnswers {
-      position: relative;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-    }
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
-    p, label {
-      font-size: 28px;
-      margin: 10px 0;
-    }
-    input[type="text"], textarea {
-      margin: 10px 0;
-      padding: 10px;
-      font-size: 18px;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.5);
-      border: 1px solid white;
-      border-radius: 5px;
-      text-align: center;
-    }
-    button {
-      margin: 10px 0;
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: rgba(255, 255, 255, 0.2);
-      border: 1px solid white;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    ul li {
-      font-size: 18px;
-      margin: 5px 0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Yayat</title>
+    <style>
+        /* Reset Margin dan Padding untuk memastikan semuanya rapi */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Mengatur background menjadi hitam dengan elemen lainnya di depan */
+        body {
+            background-color: #000; /* Hitam, bisa diganti warna lain */
+            background-image: url('website.png'); /* Ganti dengan gambar yang diinginkan */
+            background-size: cover; /* Menyesuaikan ukuran gambar dengan layar */
+            background-position: center center; /* Menempatkan gambar di tengah */
+            background-attachment: fixed; /* Memastikan background tetap di tempat saat scroll */
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white; /* Warna teks menjadi putih */
+        }
+
+        /* Menata kontainer form untuk memasukkan nama */
+        .container {
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Menata elemen input nama */
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 5px;
+            width: 60%;
+            margin-bottom: 20px;
+        }
+
+        /* Menata tombol */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-  <div id="main">
-    <h1>ANAK RUSAK</h1>
-    <p>Selamat Datang!</p>
-    <input type="text" id="username" placeholder="Siapa namamu?" />
-    <button onclick="checkName()">MASUK</button>
-  </div>
+    <div class="container">
+        <h1>Selamat Datang di Website Yayat</h1>
 
-  <div id="choices">
-    <p>Corner Hari Sabtu?</p>
-    <button onclick="submitAnswer('GASS')">GASS</button>
-    <button onclick="submitAnswer('MINGGU PI')">MINGGU PI</button>
-    <label>Tulis Alasan Lain:</label>
-    <textarea id="reason" placeholder="Alasanmu..."></textarea>
-    <button onclick="submitAnswer('Alasan: ' + document.getElementById('reason').value)">KIRIM</button>
-  </div>
+        <!-- Form input nama -->
+        <input type="text" id="username" placeholder="Masukkan Nama">
+        <br>
+        <button id="masukBtn">MASUK</button>
 
-  <div id="seeAnswers">
-    <h1>Jawaban:</h1>
-    <ul id="answersList">
-      <li>1. .......</li>
-      <li>2. .......</li>
-      <li>3. .......</li>
-    </ul>
-    <button onclick="location.href='https://chat.whatsapp.com/FlhdUu5f2lG0OeugzKaW7u'">KELUAR</button>
-  </div>
+        <div id="responseArea" style="display: none;">
+            <button id="gassBtn">GASS</button>
+            <button id="mingguBtn">MINGGU PI</button>
+        </div>
 
-  <script>
-    let answers = []; // Array untuk menyimpan jawaban
+        <div id="finalResponse" style="display: none;">
+            <p id="finalText"></p>
+            <button id="keluarBtn">KELUAR</button>
+        </div>
+    </div>
 
-    function checkName() {
-      const name = document.getElementById('username').value.trim();
-      if (!name) {
-        alert('Masukkan namamu dulu!');
-        return;
-      }
-      if (name === '200906') {
-        document.getElementById('main').style.display = 'none';
-        document.getElementById('seeAnswers').style.display = 'flex';
-        updateAnswersList();
-      } else {
-        document.getElementById('main').style.display = 'none';
-        document.getElementById('choices').style.display = 'flex';
-      }
-    }
-
-    function submitAnswer(answer) {
-      const name = document.getElementById('username').value.trim();
-      if (answer.includes('Alasan: ') && answer === 'Alasan: ') {
-        alert('Tulis alasanmu terlebih dahulu!');
-        return;
-      }
-      const currentTime = new Date();
-      const formattedTime = currentTime.toLocaleTimeString();
-
-      answers.push({ name, answer, time: formattedTime });
-
-      alert('Jawabanmu telah terkirim!');
-      document.getElementById('choices').style.display = 'none';
-      document.getElementById('seeAnswers').style.display = 'flex';
-      updateAnswersList();
-    }
-
-    function updateAnswersList() {
-      const list = document.getElementById('answersList');
-      list.innerHTML = '';
-      if (answers.length === 0) {
-        for (let i = 0; i < 3; i++) {
-          const li = document.createElement('li');
-          li.textContent = `${i + 1}. .......`;
-          list.appendChild(li);
-        }
-      } else {
-        answers.forEach((item, index) => {
-          const li = document.createElement('li');
-          li.textContent = `${index + 1}. ${item.name} - ${item.answer} - ${item.time}`;
-          list.appendChild(li);
+    <script>
+        // Event listener untuk tombol "MASUK"
+        document.getElementById("masukBtn").addEventListener("click", function() {
+            const name = document.getElementById("username").value;
+            if (name === "200906") {
+                document.getElementById("responseArea").style.display = "block"; // Tampilkan tombol GASS dan MINGGU PI
+            }
         });
-      }
-    }
-  </script>
+
+        // Event listener untuk tombol "GASS"
+        document.getElementById("gassBtn").addEventListener("click", function() {
+            document.getElementById("finalResponse").style.display = "block"; // Tampilkan hasil
+            document.getElementById("finalText").textContent = "Gas Pale"; // Teks setelah GASS
+        });
+
+        // Event listener untuk tombol "MINGGU PI"
+        document.getElementById("mingguBtn").addEventListener("click", function() {
+            document.getElementById("finalResponse").style.display = "block"; // Tampilkan hasil
+            document.getElementById("finalText").textContent = "Oke"; // Teks setelah MINGGU PI
+        });
+
+        // Event listener untuk tombol "KELUAR"
+        document.getElementById("keluarBtn").addEventListener("click", function() {
+            window.location.href = "https://chat.whatsapp.com/FlhdU5f2lG0OeugzKaW7u"; // Redirect ke WhatsApp
+        });
+    </script>
 </body>
 </html>
