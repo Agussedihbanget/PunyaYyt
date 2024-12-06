@@ -66,7 +66,7 @@
 
         .reason-container {
             margin-top: 30px;
-            display: none;
+            display: block;
         }
 
         /* Position the "Kirim" button at the bottom */
@@ -76,10 +76,24 @@
             justify-content: flex-end;
             width: 100%;
         }
+
+        /* Center "KELUAR" button in page 3 */
+        .keluar-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 30px;
+            background-color: red;
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="firstPage">
         <h1>Website Yayat</h1>
         <h2>Siapa Namamu?</h2>
         <input type="text" id="nameInput" placeholder="Masukkan Nama">
@@ -90,8 +104,8 @@
     <div class="container" id="secondPage" style="display: none;">
         <h2>MAUKO PERGI CORNER HARI SABTU?</h2>
         <div class="buttons-container">
-            <button onclick="showReason()">GASS</button>
-            <button onclick="exitSite()">TIDAK</button>
+            <button onclick="nextPageToThird()">GASS</button>
+            <button onclick="nextPageToThird()">TIDAK</button>
         </div>
         <div class="reason-container" id="reasonForm">
             <h2>Kirim Alasan Lain</h2>
@@ -102,19 +116,24 @@
         </div>
     </div>
 
+    <div class="container" id="thirdPage" style="display: none;">
+        <button class="keluar-button" onclick="exitSite()">KELUAR</button>
+    </div>
+
     <script>
         function nextPage() {
             var name = document.getElementById("nameInput").value;
             if (name) {
                 // Hide the first page and show the second page
-                document.querySelector(".container").style.display = "none";
+                document.getElementById("firstPage").style.display = "none";
                 document.getElementById("secondPage").style.display = "block";
             }
         }
 
-        function showReason() {
-            // Show the reason input form after clicking "GASS"
-            document.getElementById("reasonForm").style.display = "block";
+        function nextPageToThird() {
+            // Move to the third page when "GASS" or "TIDAK" is clicked
+            document.getElementById("secondPage").style.display = "none";
+            document.getElementById("thirdPage").style.display = "block";
         }
 
         function exitSite() {
@@ -125,9 +144,12 @@
         function sendReason() {
             var reason = document.getElementById("reasonInput").value;
             if (reason) {
+                // If reason is filled, go to the third page
                 alert("Alasan telah dikirim!");
-                // You can save the reason here, for example using localStorage or API
+                document.getElementById("secondPage").style.display = "none";
+                document.getElementById("thirdPage").style.display = "block";
             } else {
+                // If reason is not filled, alert user
                 alert("Silakan tulis alasan terlebih dahulu!");
             }
         }
